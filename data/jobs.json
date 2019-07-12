@@ -1,0 +1,38 @@
+{
+    "601-860" : { 
+        "location" : "UTMB John Sealy Hospital",
+        "description" : "Modernization and Facade Replacement",  
+        "report_num" : "Daily Field Report 204",
+        "visit_date" : "April 05, 2019 (Friday)", 
+        "temperature" : "67/76", 
+        "rainfall" : "0.00\"", 
+        "dew" : "68", 
+        "wind" : "S @ 8/15", 
+        "events" : "N/A", 
+        "Issued_by" : "Aaron Shaffner"
+    },
+    "123-456" : {
+        "location" : "",
+        "description" : "", 
+        "report_num" : "", 
+        "visit_date" : "", 
+        "temperature" : "", 
+        "rainfall" : "", 
+        "dew" : "", 
+        "wind" : "", 
+        "events" : "", 
+        "Issued_by" : ""
+    },
+    "789-101" : {
+        "location" : "",
+        "description" : "", 
+        "report_num" : "", 
+        "visit_date" : "", 
+        "temperature" : "", 
+        "rainfall" : "", 
+        "dew" : "", 
+        "wind" : "", 
+        "events" : "", 
+        "Issued_by" : ""
+    }
+}
