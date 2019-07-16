@@ -1,8 +1,19 @@
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -66,7 +77,7 @@ public class updateXML {
 	private StreamResult result;
 	
 	
-	public updateXML() throws JSONException, MalformedURLException, IOException {
+	public updateXML() throws JSONException, MalformedURLException, IOException, URISyntaxException {
 		// fetch job data from the cloud
 		JSONObject json = new JSONObject(IOUtils.toString(new URL("https://grantsingleton.github.io/Report-Builder/data/jobs.json"), Charset.forName("UTF-8")));
 		
@@ -95,7 +106,7 @@ public class updateXML {
 		update();
 	}
 	
-	private void update() {
+	private void update() throws URISyntaxException {
 		try {
 			docFactory = DocumentBuilderFactory.newInstance();
 			docBuilder = docFactory.newDocumentBuilder();
@@ -142,7 +153,19 @@ public class updateXML {
 			result = new StreamResult(new File(filepath));
 			transformer.transform(source, result);
 			
-			System.out.println("Done adding job info");
+			//System.out.println("Done adding job info");
+			
+			copyDocument();
+			
+			//System.out.println("Done copying file");
+			
+			convertToWord();
+			
+			//System.out.println("Done renaming file");
+			
+			openReport();
+			
+			//System.out.println("Done opening report");
 			
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();
@@ -155,8 +178,50 @@ public class updateXML {
 		   }
 	}
 	
+	/* Copies the document.xml file (that has been updated) into the Report.zip
+	 * file which updates the word document */
+	private void copyDocument() throws IOException, URISyntaxException {
+		
+		// The hashmap will contain the zipped file as a zipFileSystem
+		Map<String, String> env = new HashMap<>();
+		env.put("create", "true");
+
+		URI uri = URI.create("jar:file:///C:/Users/grant/eclipse-workspace/DocumentTest/resources/Report.zip");
+		
+		try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
+			Path fileToMovePath = Paths.get("./resources/document.xml");
+			Path pathInZip = zipfs.getPath("/word/document.xml");
+			
+			// copy document.xml into the Report.zip 
+			Files.copy(fileToMovePath, pathInZip, StandardCopyOption.REPLACE_EXISTING);
+		}		
+	}
 	
-	public static void main(String argv[]) throws JSONException, MalformedURLException, IOException {
+	/* Renames Report.zip to Report.docx  */
+	private void convertToWord() throws IOException {
+		
+		Path zipFile = Paths.get("./resources/Report.zip");
+		Path wordDoc = Paths.get("resources/Report.docx");
+		Files.copy(zipFile, wordDoc, StandardCopyOption.REPLACE_EXISTING);
+	}
+	
+	/* Opens the report on the users computer */
+	private void openReport() throws IOException {
+		File doc = new File("./resources/Report.docx");
+		
+		if (!Desktop.isDesktopSupported()) {
+			System.out.println("PC not supported");
+			return;
+		}
+		
+		Desktop PC = Desktop.getDesktop();
+		if(doc.exists()) {
+			PC.open(doc);
+		}
+	}
+ 	
+	
+	public static void main(String argv[]) throws JSONException, MalformedURLException, IOException, URISyntaxException {
 		updateXML xml = new updateXML();
 	}
 }
