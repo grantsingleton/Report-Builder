@@ -12,16 +12,16 @@
         "Issued_by" : "Aaron Shaffner"
     },
     "123-456" : {
-        "location" : "",
-        "description" : "", 
-        "report_num" : "", 
-        "visit_date" : "", 
-        "temperature" : "", 
-        "rainfall" : "", 
-        "dew" : "", 
-        "wind" : "", 
-        "events" : "", 
-        "Issued_by" : ""
+        "location" : "A Galaxy Far Far Away",
+        "description" : "Death Star Destruction", 
+        "report_num" : "19103", 
+        "visit_date" : "March 50, 2034 (Wednesday)", 
+        "temperature" : "109/200", 
+        "rainfall" : "lots", 
+        "dew" : "89", 
+        "wind" : "S @ 15", 
+        "events" : "X-wings", 
+        "Issued_by" : "Han Solo"
     },
     "789-101" : {
         "location" : "",
